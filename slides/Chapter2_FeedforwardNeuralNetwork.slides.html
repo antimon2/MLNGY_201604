@@ -252,6 +252,24 @@ a.anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="&#12300;&#28145;&#23652;&#23398;&#32722;&#12301;&#35501;&#26360;&#20250;">&#12300;&#28145;&#23652;&#23398;&#32722;&#12301;&#35501;&#26360;&#20250;<a class="anchor-link" href="#&#12300;&#28145;&#23652;&#23398;&#32722;&#12301;&#35501;&#26360;&#20250;">&#182;</a></h1>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p style="text-align:center;font-size:150%;line-height:150%">2016/04/16 機械学習 名古屋 第3回勉強会</p>
+</div>
+</div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="&#31532;2&#31456;-&#38918;&#20253;&#25773;&#22411;&#12493;&#12483;&#12488;&#12527;&#12540;&#12463;">&#31532;2&#31456; &#38918;&#20253;&#25773;&#22411;&#12493;&#12483;&#12488;&#12527;&#12540;&#12463;<a class="anchor-link" href="#&#31532;2&#31456;-&#38918;&#20253;&#25773;&#22411;&#12493;&#12483;&#12488;&#12527;&#12540;&#12463;">&#182;</a></h2>
 </div>
 </div>
@@ -1915,7 +1933,7 @@ z
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>参考：TensorFlow に用意されているその他の活性化関数</p>
+<p>参考：TensorFlow に用意されているその他の活性化関数（例）</p>
 
 </div>
 </div>
@@ -3361,12 +3379,113 @@ $$
 </div>
 </div>
 </div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>出力層の活性化関数としては、<strong>ソフトマックス関数</strong>を利用。<br>
+誤差関数は交差エントロピー。</p>
+
+</div>
+</div>
+</div></section><section>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>ソフトマックス関数</strong>：<br>
+$K$ 個の入力（長さ$K$のベクトル）に対して、$K$ 個の出力（長さ$K$のベクトル）を返す関数。<br>
+戻り値のどの要素も値域は $0 \le z_k \le 1$。</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+$$
+\begin{eqnarray*}
+{\bf f}({\bf u}) &=& {\bf f}({}^t[u_1, u_2, \dots, u_K])\\
+                 &=& {}^t[z_1, z_2, \dots , z_K]
+\end{eqnarray*}
+$$<p>ただし
+$$
+\begin{eqnarray*}
+z_k &=& \frac{\exp(u_k)}{\sum_{j=1}^{K}\exp(u_j)}
+\end{eqnarray*}
+$$</p>
+
+</div>
+</div>
+</div><aside class="notes">
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>softmax関数も活性化関数の一種（ただし出力層以外に使われることは少ない）</p>
+
+</div>
+</div>
+</div>
+</aside></section><section>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>TensorFlow では <code>tf.nn.softmax()</code> という関数が用意されている。</p>
+
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span> 
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">y</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">u3</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div></section><section>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>交差エントロピー：</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+$$
+E({\bf w}) = - \sum_n \sum_k d_{nk} \log(y_k({\bf x}_n; {\bf w}))
+$$
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">x_entropy</span> <span class="o">=</span> <span class="o">-</span><span class="n">tf</span><span class="o">.</span><span class="n">reduce_sum</span><span class="p">(</span><span class="n">d</span> <span class="o">*</span> <span class="n">tf</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
+<span class="c1"># または</span>
+<span class="c1"># x_entropy = tf.nn.softmax_cross_entropy_with_logits(u3, d)</span>
 </pre></div>
 
 </div>
