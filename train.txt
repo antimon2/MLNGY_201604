@@ -1,1 +1,1 @@
-../MNIST_data/train.hdf5
+MNIST_data/train.hdf5

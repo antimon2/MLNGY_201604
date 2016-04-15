@@ -1,1 +1,1 @@
-../MNIST_data/test.hdf5
+MNIST_data/test.hdf5

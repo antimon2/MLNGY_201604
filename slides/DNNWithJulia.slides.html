@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
-<title>DNN with Julia slides</title>
+<title>DNNWithJulia slides</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
@@ -517,7 +517,7 @@ shell のように複数のプログラムを組み合わせることもでき�
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-julia"><pre><span></span><span class="k">using</span> <span class="n">Mocha</span>
@@ -527,16 +527,509 @@ shell のように複数のプログラムを組み合わせることもでき�
 </div>
 </div>
 
-</div></section><section>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Configuring Mocha...
+ * CUDA       disabled by default
+ * Native Ext disabled by default
+Mocha configured, continue loading module...
+</pre>
 </div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>《※ Mocha を利用した、今回の 3LP サンプルの構築と学習・結果表示予定地》</p>
+</div>
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>WARNING: Method definition info(Any...) in module Base at util.jl:334 overwritten in module Logging at /Users/antimon2/.julia/v0.4/Logging/src/Logging.jl:61.
+WARNING: Method definition warn(Any...) in module Base at util.jl:364 overwritten in module Logging at /Users/antimon2/.julia/v0.4/Logging/src/Logging.jl:61.
+</pre>
+</div>
+</div>
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>DefaultBackend = Mocha.CPUBackend
+</pre>
+</div>
+</div>
 
 </div>
 </div>
+
+</div></section><section>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-julia"><pre><span></span><span class="n">println</span><span class="p">(</span><span class="s">&quot;train: &quot;</span><span class="p">,</span> <span class="n">open</span><span class="p">(</span><span class="n">readall</span><span class="p">,</span> <span class="s">&quot;train.txt&quot;</span><span class="p">))</span>
+<span class="n">println</span><span class="p">(</span><span class="s">&quot;test: &quot;</span><span class="p">,</span> <span class="n">open</span><span class="p">(</span><span class="n">readall</span><span class="p">,</span> <span class="s">&quot;test.txt&quot;</span><span class="p">))</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>train: MNIST_data/train.hdf5
+
+test: MNIST_data/test.hdf5
+
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div></section><section>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-julia"><pre><span></span><span class="n">data_layer</span>  <span class="o">=</span> <span class="n">AsyncHDF5DataLayer</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;train-data&quot;</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="s">&quot;train.txt&quot;</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="n">true</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[3]:</div>
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>Mocha.AsyncHDF5DataLayer(train-data)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-julia"><pre><span></span><span class="n">h1_layer</span> <span class="o">=</span> <span class="n">InnerProductLayer</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;h1&quot;</span><span class="p">,</span> <span class="n">output_dim</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span> <span class="n">neuron</span><span class="o">=</span><span class="n">Neurons</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(),</span> <span class="n">bottoms</span><span class="o">=</span><span class="p">[:</span><span class="n">data</span><span class="p">],</span> <span class="n">tops</span><span class="o">=</span><span class="p">[:</span><span class="n">h1</span><span class="p">])</span>
+<span class="n">h2_layer</span> <span class="o">=</span> <span class="n">InnerProductLayer</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;h2&quot;</span><span class="p">,</span> <span class="n">output_dim</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span> <span class="n">neuron</span><span class="o">=</span><span class="n">Neurons</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(),</span> <span class="n">bottoms</span><span class="o">=</span><span class="p">[:</span><span class="n">h1</span><span class="p">],</span> <span class="n">tops</span><span class="o">=</span><span class="p">[:</span><span class="n">h2</span><span class="p">])</span>
+<span class="n">output_layer</span> <span class="o">=</span> <span class="n">InnerProductLayer</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;y&quot;</span><span class="p">,</span> <span class="n">output_dim</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">bottoms</span><span class="o">=</span><span class="p">[:</span><span class="n">h2</span><span class="p">],</span> <span class="n">tops</span><span class="o">=</span><span class="p">[:</span><span class="n">y</span><span class="p">])</span>
+<span class="n">loss_layer</span> <span class="o">=</span> <span class="n">SoftmaxLossLayer</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;loss&quot;</span><span class="p">,</span> <span class="n">bottoms</span><span class="o">=</span><span class="p">[:</span><span class="n">y</span><span class="p">,:</span><span class="n">label</span><span class="p">])</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[4]:</div>
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>Mocha.SoftmaxLossLayer(loss)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div></section><section>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-julia"><pre><span></span><span class="n">backend</span> <span class="o">=</span> <span class="n">DefaultBackend</span><span class="p">()</span>
+<span class="n">init</span><span class="p">(</span><span class="n">backend</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div></section><section>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-julia"><pre><span></span><span class="n">common_layers</span> <span class="o">=</span> <span class="p">[</span><span class="n">h1_layer</span><span class="p">,</span> <span class="n">h2_layer</span><span class="p">,</span> <span class="n">output_layer</span><span class="p">]</span>
+<span class="n">net</span> <span class="o">=</span> <span class="n">Net</span><span class="p">(</span><span class="s">&quot;MNIST-train&quot;</span><span class="p">,</span> <span class="n">backend</span><span class="p">,</span> <span class="p">[</span><span class="n">data_layer</span><span class="p">,</span> <span class="n">common_layers</span><span class="o">...</span><span class="p">,</span> <span class="n">loss_layer</span><span class="p">])</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>16- 4 00:17:21:INFO:root:Constructing net MNIST-train on Mocha.CPUBackend...
+16- 4 00:17:21:INFO:root:Topological sorting 5 layers...
+16- 4 00:17:21:INFO:root:Setup layers...
+16- 4 00:17:22:INFO:root:Network constructed!
+</pre>
+</div>
+</div>
+
+<div class="output_area"><div class="prompt output_prompt">Out[6]:</div>
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>************************************************************
+          NAME: MNIST-train
+       BACKEND: Mocha.CPUBackend
+  ARCHITECTURE: 5 layers
+............................................................
+ *** Mocha.AsyncHDF5DataLayer(train-data)
+    Outputs ---------------------------
+          data: Blob(28 x 28 x 1 x 64)
+         label: Blob(1 x 64)
+............................................................
+ *** Mocha.InnerProductLayer(h1)
+    Inputs ----------------------------
+          data: Blob(28 x 28 x 1 x 64)
+    Outputs ---------------------------
+            h1: Blob(128 x 64)
+............................................................
+ *** Mocha.InnerProductLayer(h2)
+    Inputs ----------------------------
+            h1: Blob(128 x 64)
+    Outputs ---------------------------
+            h2: Blob(64 x 64)
+............................................................
+ *** Mocha.InnerProductLayer(y)
+    Inputs ----------------------------
+            h2: Blob(64 x 64)
+    Outputs ---------------------------
+             y: Blob(10 x 64)
+............................................................
+ *** Mocha.SoftmaxLossLayer(loss)
+    Inputs ----------------------------
+             y: Blob(10 x 64)
+         label: Blob(1 x 64)
+************************************************************
+</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div></section><section>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-julia"><pre><span></span><span class="n">method</span> <span class="o">=</span> <span class="n">SGD</span><span class="p">()</span>
+<span class="n">params</span> <span class="o">=</span> <span class="n">make_solver_parameters</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">3000</span><span class="p">,</span> <span class="n">regu_coef</span><span class="o">=</span><span class="mf">0.0005</span><span class="p">,</span>
+                                <span class="n">mom_policy</span><span class="o">=</span><span class="n">MomPolicy</span><span class="o">.</span><span class="n">Fixed</span><span class="p">(</span><span class="mf">0.9</span><span class="p">),</span>
+                                <span class="n">lr_policy</span><span class="o">=</span><span class="n">LRPolicy</span><span class="o">.</span><span class="n">Inv</span><span class="p">(</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.0001</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">))</span>
+<span class="n">solver</span> <span class="o">=</span> <span class="n">Solver</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[7]:</div>
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>Mocha.Solver{Mocha.SGD}(Mocha.SGD(),Dict{Symbol,Any}(:regu_coef=&gt;0.0005,:load_from=&gt;&quot;&quot;,:lr_policy=&gt;Mocha.LRPolicy.Inv(0.01,0.0001,0.75),:mom_policy=&gt;Mocha.MomPolicy.Fixed(0.9),:max_iter=&gt;3000),Mocha.CoffeeLounge(&quot;&quot;,1,:merge,Dict{AbstractString,Dict{Int64,AbstractFloat}}(),Mocha.CoffeeBreak[],false,4491540912,4480009008))</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div></section><section>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-julia"><pre><span></span><span class="n">setup_coffee_lounge</span><span class="p">(</span><span class="n">solver</span><span class="p">,</span> <span class="n">every_n_iter</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[8]:</div>
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>:merge</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div></section><section>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-julia"><pre><span></span><span class="c"># report training progress every 1000 iterations</span>
+<span class="n">add_coffee_break</span><span class="p">(</span><span class="n">solver</span><span class="p">,</span> <span class="n">TrainingSummary</span><span class="p">(),</span> <span class="n">every_n_iter</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[9]:</div>
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>1-element Array{Mocha.CoffeeBreak,1}:
+ Mocha.CoffeeBreak(Mocha.TrainingSummary(Any[:iter,:obj_val]),1000,0)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div></section><section>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-julia"><pre><span></span><span class="c"># show performance on test data every 1000 iterations</span>
+<span class="n">data_layer_test</span> <span class="o">=</span> <span class="n">HDF5DataLayer</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;test-data&quot;</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="s">&quot;test.txt&quot;</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">acc_layer</span> <span class="o">=</span> <span class="n">AccuracyLayer</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;test-accuracy&quot;</span><span class="p">,</span> <span class="n">bottoms</span><span class="o">=</span><span class="p">[:</span><span class="n">y</span><span class="p">,</span> <span class="p">:</span><span class="n">label</span><span class="p">])</span>
+<span class="n">test_net</span> <span class="o">=</span> <span class="n">Net</span><span class="p">(</span><span class="s">&quot;MNIST-test&quot;</span><span class="p">,</span> <span class="n">backend</span><span class="p">,</span> <span class="p">[</span><span class="n">data_layer_test</span><span class="p">,</span> <span class="n">common_layers</span><span class="o">...</span><span class="p">,</span> <span class="n">acc_layer</span><span class="p">])</span>
+<span class="n">add_coffee_break</span><span class="p">(</span><span class="n">solver</span><span class="p">,</span> <span class="n">ValidationPerformance</span><span class="p">(</span><span class="n">test_net</span><span class="p">),</span> <span class="n">every_n_iter</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>16- 4 00:17:35:INFO:root:Constructing net MNIST-test on Mocha.CPUBackend...
+16- 4 00:17:35:INFO:root:Topological sorting 5 layers...
+16- 4 00:17:35:INFO:root:Setup layers...
+16- 4 00:17:36:DEBUG:root:InnerProductLayer(h1): sharing weights and bias
+16- 4 00:17:36:DEBUG:root:InnerProductLayer(h2): sharing weights and bias
+16- 4 00:17:36:DEBUG:root:InnerProductLayer(y): sharing weights and bias
+16- 4 00:17:36:INFO:root:Network constructed!
+</pre>
+</div>
+</div>
+
+<div class="output_area"><div class="prompt output_prompt">Out[10]:</div>
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>2-element Array{Mocha.CoffeeBreak,1}:
+ Mocha.CoffeeBreak(Mocha.TrainingSummary(Any[:iter,:obj_val]),1000,0)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+ Mocha.CoffeeBreak(Mocha.ValidationPerformance(************************************************************
+          NAME: MNIST-test
+       BACKEND: Mocha.CPUBackend
+  ARCHITECTURE: 5 layers
+............................................................
+ *** Mocha.HDF5DataLayer(test-data)
+    Outputs ---------------------------
+          data: Blob(28 x 28 x 1 x 100)
+         label: Blob(1 x 100)
+............................................................
+ *** Mocha.InnerProductLayer(h1)
+    Inputs ----------------------------
+          data: Blob(28 x 28 x 1 x 100)
+    Outputs ---------------------------
+            h1: Blob(128 x 100)
+............................................................
+ *** Mocha.InnerProductLayer(h2)
+    Inputs ----------------------------
+            h1: Blob(128 x 100)
+    Outputs ---------------------------
+            h2: Blob(64 x 100)
+............................................................
+ *** Mocha.InnerProductLayer(y)
+    Inputs ----------------------------
+            h2: Blob(64 x 100)
+    Outputs ---------------------------
+             y: Blob(10 x 100)
+............................................................
+ *** Mocha.AccuracyLayer(test-accuracy)
+    Inputs ----------------------------
+             y: Blob(10 x 100)
+         label: Blob(1 x 100)
+************************************************************
+,Function[]),1000,0)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div></section><section>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-julia"><pre><span></span><span class="n">solve</span><span class="p">(</span><span class="n">solver</span><span class="p">,</span> <span class="n">net</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>16- 4 00:17:38:DEBUG:root:#DEBUG Checking network topology for back-propagation
+16- 4 00:17:38:DEBUG:root:Init network MNIST-train
+16- 4 00:17:39:DEBUG:root:Init parameter weight for layer h1
+16- 4 00:17:39:DEBUG:root:Init parameter bias for layer h1
+16- 4 00:17:39:DEBUG:root:Init parameter weight for layer h2
+16- 4 00:17:39:DEBUG:root:Init parameter bias for layer h2
+16- 4 00:17:39:DEBUG:root:Init parameter weight for layer y
+16- 4 00:17:39:DEBUG:root:Init parameter bias for layer y
+16- 4 00:17:40:DEBUG:root:#DEBUG Initializing coffee breaks
+16- 4 00:17:40:DEBUG:root:Init network MNIST-test
+16- 4 00:17:41:INFO:root: TRAIN iter=000000 obj_val=2.32515907
+16- 4 00:17:41:INFO:root:
+16- 4 00:17:41:INFO:root:## Performance on Validation Set after 0 iterations
+16- 4 00:17:41:INFO:root:---------------------------------------------------------
+16- 4 00:17:41:INFO:root:  Accuracy (avg over 10000) = 8.9000%
+16- 4 00:17:41:INFO:root:---------------------------------------------------------
+16- 4 00:17:41:INFO:root:
+16- 4 00:17:41:DEBUG:root:#DEBUG Entering solver loop
+16- 4 00:17:43:INFO:root: TRAIN iter=001000 obj_val=0.11005754
+16- 4 00:17:43:INFO:root:
+16- 4 00:17:43:INFO:root:## Performance on Validation Set after 1000 iterations
+16- 4 00:17:43:INFO:root:---------------------------------------------------------
+16- 4 00:17:43:INFO:root:  Accuracy (avg over 10000) = 94.4600%
+16- 4 00:17:43:INFO:root:---------------------------------------------------------
+16- 4 00:17:43:INFO:root:
+16- 4 00:17:45:INFO:root: TRAIN iter=002000 obj_val=0.10670074
+16- 4 00:17:45:INFO:root:
+16- 4 00:17:45:INFO:root:## Performance on Validation Set after 2000 iterations
+16- 4 00:17:45:INFO:root:---------------------------------------------------------
+16- 4 00:17:45:INFO:root:  Accuracy (avg over 10000) = 95.7400%
+16- 4 00:17:45:INFO:root:---------------------------------------------------------
+16- 4 00:17:45:INFO:root:
+16- 4 00:17:47:INFO:root: TRAIN iter=003000 obj_val=0.20291162
+16- 4 00:17:47:INFO:root:
+16- 4 00:17:47:INFO:root:## Performance on Validation Set after 3000 iterations
+16- 4 00:17:47:INFO:root:---------------------------------------------------------
+16- 4 00:17:47:INFO:root:  Accuracy (avg over 10000) = 96.4800%
+16- 4 00:17:47:INFO:root:---------------------------------------------------------
+16- 4 00:17:47:INFO:root:
+</pre>
+</div>
+</div>
+
+<div class="output_area"><div class="prompt output_prompt">Out[11]:</div>
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>3-element Array{Array{Void,1},1}:
+ [nothing,nothing]
+ [nothing,nothing]
+ [nothing,nothing]</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div></section><section>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-julia"><pre><span></span><span class="n">destroy</span><span class="p">(</span><span class="n">net</span><span class="p">)</span>
+<span class="n">destroy</span><span class="p">(</span><span class="n">test_net</span><span class="p">)</span>
+<span class="n">shutdown</span><span class="p">(</span><span class="n">backend</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>16- 4 00:17:54:DEBUG:root:Destroying network MNIST-train
+16- 4 00:17:54:INFO:root:AsyncHDF5DataLayer: Stopping IO task...
+16- 4 00:17:54:INFO:root:AsyncHDF5DataLayer: IO Task reaching the end...
+16- 4 00:17:54:DEBUG:root:Destroying network MNIST-test
+</pre>
+</div>
+</div>
+
+<div class="output_area"><div class="prompt output_prompt">Out[12]:</div>
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>Dict{AbstractString,Array{Mocha.AbstractParameter,1}} with 0 entries</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
 </div></section></section><section><section>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
@@ -617,7 +1110,7 @@ shell のように複数のプログラムを組み合わせることもでき�
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-julia"><pre><span></span><span class="k">using</span> <span class="n">MXNet</span>
@@ -630,7 +1123,7 @@ shell のように複数のプログラムを組み合わせることもでき�
 </div></section><section>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-julia"><pre><span></span><span class="c"># 3LP ネットワーク構築</span>
@@ -651,11 +1144,11 @@ shell のように複数のプログラムを組み合わせることもでき�
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[2]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[14]:</div>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>MXNet.mx.SymbolicNode(MXNet.mx.MX_SymbolHandle(Ptr{Void} @0x00007fca8b195490))</pre>
+<pre>MXNet.mx.SymbolicNode(MXNet.mx.MX_SymbolHandle(Ptr{Void} @0x00007fceadb1d9c0))</pre>
 </div>
 
 </div>
@@ -666,13 +1159,24 @@ shell のように複数のプログラムを組み合わせることもでき�
 </div></section><section>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-julia"><pre><span></span><span class="c"># データ取得（データプロバイダ生成）</span>
 <span class="n">batch_size</span> <span class="o">=</span> <span class="mi">100</span>
-<span class="n">include</span><span class="p">(</span><span class="n">Pkg</span><span class="o">.</span><span class="n">dir</span><span class="p">(</span><span class="s">&quot;MXNet&quot;</span><span class="p">,</span> <span class="s">&quot;examples&quot;</span><span class="p">,</span> <span class="s">&quot;mnist&quot;</span><span class="p">,</span> <span class="s">&quot;mnist-data.jl&quot;</span><span class="p">))</span>
-<span class="n">train_provider</span><span class="p">,</span> <span class="n">eval_provider</span> <span class="o">=</span> <span class="n">get_mnist_providers</span><span class="p">(</span><span class="n">batch_size</span><span class="p">)</span>
+<span class="c"># include(Pkg.dir(&quot;MXNet&quot;, &quot;examples&quot;, &quot;mnist&quot;, &quot;mnist-data.jl&quot;))</span>
+<span class="c"># train_provider, eval_provider = get_mnist_providers(batch_size)</span>
+<span class="n">data_name</span> <span class="o">=</span> <span class="p">:</span><span class="n">data</span>
+<span class="n">label_name</span> <span class="o">=</span> <span class="p">:</span><span class="n">softmax_label</span>
+<span class="n">flat</span><span class="o">=</span><span class="n">true</span>
+<span class="n">train_provider</span> <span class="o">=</span> <span class="n">mx</span><span class="o">.</span><span class="n">MNISTProvider</span><span class="p">(</span><span class="n">image</span><span class="o">=</span><span class="s">&quot;MNIST_data/train-images-idx3-ubyte&quot;</span><span class="p">,</span>
+                                  <span class="n">label</span><span class="o">=</span><span class="s">&quot;MNIST_data/train-labels-idx1-ubyte&quot;</span><span class="p">,</span>
+                                  <span class="n">data_name</span><span class="o">=</span><span class="n">data_name</span><span class="p">,</span> <span class="n">label_name</span><span class="o">=</span><span class="n">label_name</span><span class="p">,</span>
+                                  <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="n">true</span><span class="p">,</span> <span class="n">flat</span><span class="o">=</span><span class="n">flat</span><span class="p">,</span> <span class="n">silent</span><span class="o">=</span><span class="n">true</span><span class="p">)</span>
+<span class="n">eval_provider</span> <span class="o">=</span> <span class="n">mx</span><span class="o">.</span><span class="n">MNISTProvider</span><span class="p">(</span><span class="n">image</span><span class="o">=</span><span class="s">&quot;MNIST_data/t10k-images-idx3-ubyte&quot;</span><span class="p">,</span>
+                                 <span class="n">label</span><span class="o">=</span><span class="s">&quot;MNIST_data/t10k-labels-idx1-ubyte&quot;</span><span class="p">,</span>
+                                 <span class="n">data_name</span><span class="o">=</span><span class="n">data_name</span><span class="p">,</span> <span class="n">label_name</span><span class="o">=</span><span class="n">label_name</span><span class="p">,</span>
+                                 <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="n">false</span><span class="p">,</span> <span class="n">flat</span><span class="o">=</span><span class="n">flat</span><span class="p">,</span> <span class="n">silent</span><span class="o">=</span><span class="n">true</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -683,11 +1187,11 @@ shell のように複数のプログラムを組み合わせることもでき�
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[3]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[15]:</div>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>(MXNet.mx.MXDataProvider(MXNet.mx.MX_DataIterHandle(Ptr{Void} @0x00007fca8b27b160),Tuple{Symbol,Tuple}[(:data,(784,100))],Tuple{Symbol,Tuple}[(:softmax_label,(100,))],100,true,true),MXNet.mx.MXDataProvider(MXNet.mx.MX_DataIterHandle(Ptr{Void} @0x00007fca8b3851e0),Tuple{Symbol,Tuple}[(:data,(784,100))],Tuple{Symbol,Tuple}[(:softmax_label,(100,))],100,true,true))</pre>
+<pre>MXNet.mx.MXDataProvider(MXNet.mx.MX_DataIterHandle(Ptr{Void} @0x00007fceadb664a0),Tuple{Symbol,Tuple}[(:data,(784,100))],Tuple{Symbol,Tuple}[(:softmax_label,(100,))],100,true,true)</pre>
 </div>
 
 </div>
@@ -698,7 +1202,7 @@ shell のように複数のプログラムを組み合わせることもでき�
 </div></section><section>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-julia"><pre><span></span><span class="c"># モデル構築・最適化</span>
@@ -710,7 +1214,7 @@ shell のように複数のプログラムを組み合わせることもでき�
 <span class="n">optimizer</span> <span class="o">=</span> <span class="n">mx</span><span class="o">.</span><span class="n">SGD</span><span class="p">(</span><span class="n">lr</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">momentum</span><span class="o">=</span><span class="mf">0.9</span><span class="p">)</span>
 
 <span class="c"># fit parameters</span>
-<span class="n">mx</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">train_provider</span><span class="p">,</span> <span class="n">n_epoch</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">eval_data</span><span class="o">=</span><span class="n">eval_provider</span><span class="p">)</span>
+<span class="n">mx</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">train_provider</span><span class="p">,</span> <span class="n">n_epoch</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">eval_data</span><span class="o">=</span><span class="n">eval_provider</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -722,131 +1226,35 @@ shell のように複数のプログラムを組み合わせることもでき�
 
 
 <div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>INFO: Start training on [CPU0]
-INFO: Initializing parameters...
-INFO: Creating KVStore...
-INFO: Start training...
-INFO: == Epoch 001 ==========
-INFO: ## Training summary
-INFO:           accuracy = 0.7548
-INFO:               time = 1.2777 seconds
-INFO: ## Validation summary
-INFO:           accuracy = 0.9498
-INFO: == Epoch 002 ==========
-INFO: ## Training summary
-INFO:           accuracy = 0.9575
-INFO:               time = 0.8909 seconds
-INFO: ## Validation summary
-INFO:           accuracy = 0.9678
-INFO: == Epoch 003 ==========
-INFO: ## Training summary
-INFO:           accuracy = 0.9700
-INFO:               time = 0.9023 seconds
-INFO: ## Validation summary
-INFO:           accuracy = 0.9689
-INFO: == Epoch 004 ==========
-INFO: ## Training summary
-INFO:           accuracy = 0.9760
-INFO:               time = 0.8999 seconds
-INFO: ## Validation summary
-INFO:           accuracy = 0.9694
-INFO: == Epoch 005 ==========
-INFO: ## Training summary
-INFO:           accuracy = 0.9811
-INFO:               time = 0.9133 seconds
-INFO: ## Validation summary
-INFO:           accuracy = 0.9750
-INFO: == Epoch 006 ==========
-INFO: ## Training summary
-INFO:           accuracy = 0.9840
-INFO:               time = 0.8973 seconds
-INFO: ## Validation summary
-INFO:           accuracy = 0.9721
-INFO: == Epoch 007 ==========
-INFO: ## Training summary
-INFO:           accuracy = 0.9854
-INFO:               time = 0.9144 seconds
-INFO: ## Validation summary
-INFO:           accuracy = 0.9757
-INFO: == Epoch 008 ==========
-INFO: ## Training summary
-INFO:           accuracy = 0.9862
-INFO:               time = 0.8967 seconds
-INFO: ## Validation summary
-INFO:           accuracy = 0.9716
-INFO: == Epoch 009 ==========
-INFO: ## Training summary
-INFO:           accuracy = 0.9879
-INFO:               time = 0.9243 seconds
-INFO: ## Validation summary
-INFO:           accuracy = 0.9761
-INFO: == Epoch 010 ==========
-INFO: ## Training summary
-INFO:           accuracy = 0.9884
-INFO:               time = 0.9131 seconds
-INFO: ## Validation summary
-INFO:           accuracy = 0.9726
-INFO: == Epoch 011 ==========
-INFO: ## Training summary
-INFO:           accuracy = 0.9890
-INFO:               time = 0.9517 seconds
-INFO: ## Validation summary
-INFO:           accuracy = 0.9755
-INFO: == Epoch 012 ==========
-INFO: ## Training summary
-INFO:           accuracy = 0.9895
-INFO:               time = 0.9116 seconds
-INFO: ## Validation summary
-INFO:           accuracy = 0.9791
-INFO: == Epoch 013 ==========
-INFO: ## Training summary
-INFO:           accuracy = 0.9901
-INFO:               time = 0.9552 seconds
-INFO: ## Validation summary
-INFO:           accuracy = 0.9772
-INFO: == Epoch 014 ==========
-INFO: ## Training summary
-INFO:           accuracy = 0.9917
-INFO:               time = 0.9267 seconds
-INFO: ## Validation summary
-INFO:           accuracy = 0.9772
-INFO: == Epoch 015 ==========
-INFO: ## Training summary
-INFO:           accuracy = 0.9910
-INFO:               time = 0.9100 seconds
-INFO: ## Validation summary
-INFO:           accuracy = 0.9772
-INFO: == Epoch 016 ==========
-INFO: ## Training summary
-INFO:           accuracy = 0.9925
-INFO:               time = 0.9603 seconds
-INFO: ## Validation summary
-INFO:           accuracy = 0.9774
-INFO: == Epoch 017 ==========
-INFO: ## Training summary
-INFO:           accuracy = 0.9929
-INFO:               time = 0.9285 seconds
-INFO: ## Validation summary
-INFO:           accuracy = 0.9762
-INFO: == Epoch 018 ==========
-INFO: ## Training summary
-INFO:           accuracy = 0.9925
-INFO:               time = 0.9775 seconds
-INFO: ## Validation summary
-INFO:           accuracy = 0.9800
-INFO: == Epoch 019 ==========
-INFO: ## Training summary
-INFO:           accuracy = 0.9940
-INFO:               time = 0.9304 seconds
-INFO: ## Validation summary
-INFO:           accuracy = 0.9804
-INFO: == Epoch 020 ==========
-INFO: ## Training summary
-INFO:           accuracy = 0.9940
-INFO:               time = 1.2567 seconds
-INFO: ## Validation summary
-INFO:           accuracy = 0.9799
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>16- 4 00:18:17:INFO:root:Start training on [CPU0]
+16- 4 00:18:17:INFO:root:Initializing parameters...
+16- 4 00:18:18:INFO:root:Creating KVStore...
+16- 4 00:18:18:INFO:root:Start training...
+16- 4 00:18:19:INFO:root:== Epoch 001 ==========
+16- 4 00:18:19:INFO:root:## Training summary
+16- 4 00:18:19:INFO:root:          accuracy = 0.7548
+16- 4 00:18:19:INFO:root:              time = 1.3291 seconds
+16- 4 00:18:19:INFO:root:## Validation summary
+16- 4 00:18:19:INFO:root:          accuracy = 0.9498
+16- 4 00:18:20:INFO:root:== Epoch 002 ==========
+16- 4 00:18:20:INFO:root:## Training summary
+16- 4 00:18:20:INFO:root:          accuracy = 0.9575
+16- 4 00:18:20:INFO:root:              time = 0.9406 seconds
+16- 4 00:18:20:INFO:root:## Validation summary
+16- 4 00:18:20:INFO:root:          accuracy = 0.9678
+16- 4 00:18:21:INFO:root:== Epoch 003 ==========
+16- 4 00:18:21:INFO:root:## Training summary
+16- 4 00:18:21:INFO:root:          accuracy = 0.9700
+16- 4 00:18:21:INFO:root:              time = 0.8987 seconds
+16- 4 00:18:21:INFO:root:## Validation summary
+16- 4 00:18:21:INFO:root:          accuracy = 0.9689
+16- 4 00:18:22:INFO:root:== Epoch 004 ==========
+16- 4 00:18:22:INFO:root:## Training summary
+16- 4 00:18:22:INFO:root:          accuracy = 0.9760
+16- 4 00:18:22:INFO:root:              time = 0.9881 seconds
+16- 4 00:18:23:INFO:root:## Validation summary
+16- 4 00:18:23:INFO:root:          accuracy = 0.9694
 </pre>
 </div>
 </div>
@@ -857,7 +1265,7 @@ INFO:           accuracy = 0.9799
 </div></section><section>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-julia"><pre><span></span><span class="c"># 予測</span>
@@ -872,21 +1280,21 @@ INFO:           accuracy = 0.9799
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[5]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[17]:</div>
 
 
 <div class="output_text output_subarea output_execute_result">
 <pre>10x10000 Array{Float32,2}:
- 1.06312e-10  5.80024e-13  2.965e-8     …  4.77526e-11  6.73342e-13
- 7.46479e-8   1.50914e-11  0.999939        3.83869e-11  9.10979e-16
- 5.39378e-9   1.0          2.33463e-5      2.85017e-13  2.81719e-13
- 4.7356e-7    4.01732e-8   8.18917e-10     5.87185e-10  3.66529e-16
- 8.03094e-10  2.75113e-16  3.04848e-6      3.1257e-14   2.58185e-13
- 2.61006e-9   8.06292e-16  5.892e-9     …  0.999999     1.2713e-11 
- 3.00019e-11  6.33867e-15  1.13649e-7      1.09904e-9   1.0        
- 0.999999     6.59821e-11  3.33885e-5      2.07988e-12  6.45652e-19
- 2.26256e-9   1.24287e-11  1.17842e-6      1.22676e-6   5.31528e-13
- 1.94323e-7   3.90443e-21  7.36552e-9      7.82996e-11  1.12308e-19</pre>
+ 1.86025e-9   4.02211e-9   1.15507e-5  …  9.35833e-7   2.54459e-7 
+ 3.69469e-7   3.88762e-8   0.954931       2.50692e-8   3.24207e-11
+ 1.16894e-6   0.999966     0.00123508     4.8395e-8    1.07991e-8 
+ 2.57024e-5   3.30698e-5   7.87967e-5     6.13717e-7   3.44376e-10
+ 8.22568e-10  7.09632e-11  0.0044216      1.03419e-9   2.8778e-8  
+ 2.04646e-8   2.97188e-9   2.18991e-5  …  0.999847     2.60934e-6 
+ 5.3756e-11   1.45219e-9   2.17161e-5     4.03898e-5   0.999997   
+ 0.999967     5.11702e-7   0.0283429      2.44429e-8   2.21268e-13
+ 7.42553e-8   1.45197e-7   0.00969576     0.000110407  6.22504e-9 
+ 5.96944e-6   1.04052e-13  0.00123922     1.27594e-7   2.23525e-11</pre>
 </div>
 
 </div>
@@ -897,7 +1305,7 @@ INFO:           accuracy = 0.9799
 </div></section><section>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="prompt input_prompt">In&nbsp;[18]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-julia"><pre><span></span><span class="c"># 予測精度確認</span>
@@ -931,7 +1339,7 @@ INFO:           accuracy = 0.9799
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>Accuracy on eval set: 97.99%
+<pre>Accuracy on eval set: 96.94%
 </pre>
 </div>
 </div>
@@ -1003,7 +1411,7 @@ INFO:           accuracy = 0.9799
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="prompt input_prompt">In&nbsp;[19]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-julia"><pre><span></span><span class="k">using</span> <span class="n">PyCall</span>
@@ -1016,7 +1424,7 @@ INFO:           accuracy = 0.9799
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="prompt input_prompt">In&nbsp;[20]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-julia"><pre><span></span><span class="p">@</span><span class="n">pyimport</span> <span class="n">tensorflow</span> <span class="n">as</span> <span class="n">tf</span>
@@ -1030,12 +1438,12 @@ INFO:           accuracy = 0.9799
 </div></section><section>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="prompt input_prompt">In&nbsp;[21]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-julia"><pre><span></span><span class="c"># データ取得</span>
 <span class="p">@</span><span class="n">pyimport</span> <span class="n">tensorflow</span><span class="o">.</span><span class="n">examples</span><span class="o">.</span><span class="n">tutorials</span><span class="o">.</span><span class="n">mnist</span><span class="o">.</span><span class="n">input_data</span> <span class="n">as</span> <span class="n">input_data</span>
-<span class="n">mnist</span> <span class="o">=</span> <span class="n">input_data</span><span class="o">.</span><span class="n">read_data_sets</span><span class="p">(</span><span class="s">&quot;../MNIST_data/&quot;</span><span class="p">,</span> <span class="n">one_hot</span><span class="o">=</span><span class="n">true</span><span class="p">)</span>
+<span class="n">mnist</span> <span class="o">=</span> <span class="n">input_data</span><span class="o">.</span><span class="n">read_data_sets</span><span class="p">(</span><span class="s">&quot;MNIST_data/&quot;</span><span class="p">,</span> <span class="n">one_hot</span><span class="o">=</span><span class="n">true</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -1048,19 +1456,19 @@ INFO:           accuracy = 0.9799
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>Extracting ../MNIST_data/train-images-idx3-ubyte.gz
-Extracting ../MNIST_data/train-labels-idx1-ubyte.gz
-Extracting ../MNIST_data/t10k-images-idx3-ubyte.gz
-Extracting ../MNIST_data/t10k-labels-idx1-ubyte.gz
+<pre>Extracting MNIST_data/train-images-idx3-ubyte.gz
+Extracting MNIST_data/train-labels-idx1-ubyte.gz
+Extracting MNIST_data/t10k-images-idx3-ubyte.gz
+Extracting MNIST_data/t10k-labels-idx1-ubyte.gz
 </pre>
 </div>
 </div>
 
-<div class="output_area"><div class="prompt output_prompt">Out[9]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[21]:</div>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>PyObject &lt;tensorflow.examples.tutorials.mnist.input_data.DataSets object at 0x347d7d150&gt;</pre>
+<pre>PyObject &lt;tensorflow.examples.tutorials.mnist.input_data.DataSets object at 0x34e566150&gt;</pre>
 </div>
 
 </div>
@@ -1083,11 +1491,11 @@ Extracting ../MNIST_data/t10k-labels-idx1-ubyte.gz
 </aside></section><section>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="prompt input_prompt">In&nbsp;[22]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-julia"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="p">[</span><span class="n">nothing</span><span class="p">,</span> <span class="mi">784</span><span class="p">])</span>
-<span class="n">y_</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="p">[</span><span class="n">nothing</span><span class="p">,</span> <span class="mi">10</span><span class="p">])</span>
+<span class="n">d</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="p">[</span><span class="n">nothing</span><span class="p">,</span> <span class="mi">10</span><span class="p">])</span>
 </pre></div>
 
 </div>
@@ -1098,11 +1506,11 @@ Extracting ../MNIST_data/t10k-labels-idx1-ubyte.gz
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[10]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[22]:</div>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>PyObject &lt;tensorflow.python.framework.ops.Tensor object at 0x347dab550&gt;</pre>
+<pre>PyObject &lt;tensorflow.python.framework.ops.Tensor object at 0x34e594510&gt;</pre>
 </div>
 
 </div>
@@ -1113,7 +1521,7 @@ Extracting ../MNIST_data/t10k-labels-idx1-ubyte.gz
 </div></section><section>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In&nbsp;[23]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-julia"><pre><span></span><span class="c"># 3LP 構築</span>
@@ -1137,11 +1545,11 @@ Extracting ../MNIST_data/t10k-labels-idx1-ubyte.gz
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[11]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[23]:</div>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>PyObject &lt;tensorflow.python.framework.ops.Tensor object at 0x348010050&gt;</pre>
+<pre>PyObject &lt;tensorflow.python.framework.ops.Tensor object at 0x31282e050&gt;</pre>
 </div>
 
 </div>
@@ -1152,10 +1560,11 @@ Extracting ../MNIST_data/t10k-labels-idx1-ubyte.gz
 </div></section><section>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="prompt input_prompt">In&nbsp;[24]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-julia"><pre><span></span><span class="n">cross_entropy</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">neg</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">reduce_sum</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">mul</span><span class="p">(</span><span class="n">y_</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">y</span><span class="p">))))</span>
+<div class=" highlight hl-julia"><pre><span></span><span class="c"># cross_entropy = tf.neg(tf.reduce_sum(tf.mul(d, tf.log(y))))</span>
+<span class="n">cross_entropy</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">neg</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">reduce_sum</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">mul</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="mf">1e-10</span><span class="p">)))))</span>
 </pre></div>
 
 </div>
@@ -1166,11 +1575,11 @@ Extracting ../MNIST_data/t10k-labels-idx1-ubyte.gz
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[12]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[24]:</div>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>PyObject &lt;tensorflow.python.framework.ops.Tensor object at 0x34801e250&gt;</pre>
+<pre>PyObject &lt;tensorflow.python.framework.ops.Tensor object at 0x31283a690&gt;</pre>
 </div>
 
 </div>
@@ -1181,10 +1590,11 @@ Extracting ../MNIST_data/t10k-labels-idx1-ubyte.gz
 </div></section><section>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="prompt input_prompt">In&nbsp;[25]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-julia"><pre><span></span><span class="n">optimizer</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="p">[:</span><span class="n">GradientDescentOptimizer</span><span class="p">](</span><span class="mf">0.01</span><span class="p">)</span>
+<div class=" highlight hl-julia"><pre><span></span><span class="c"># optimizer = tf.train[:GradientDescentOptimizer](0.01)</span>
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="p">[:</span><span class="n">MomentumOptimizer</span><span class="p">](</span><span class="mf">0.001</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">)</span>
 <span class="n">train_step</span> <span class="o">=</span> <span class="n">optimizer</span><span class="p">[:</span><span class="n">minimize</span><span class="p">](</span><span class="n">cross_entropy</span><span class="p">)</span>
 </pre></div>
 
@@ -1196,11 +1606,11 @@ Extracting ../MNIST_data/t10k-labels-idx1-ubyte.gz
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[13]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[25]:</div>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>PyObject &lt;tensorflow.python.framework.ops.Operation object at 0x348097390&gt;</pre>
+<pre>PyObject &lt;tensorflow.python.framework.ops.Operation object at 0x34a932410&gt;</pre>
 </div>
 
 </div>
@@ -1211,7 +1621,7 @@ Extracting ../MNIST_data/t10k-labels-idx1-ubyte.gz
 </div></section><section>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="prompt input_prompt">In&nbsp;[26]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-julia"><pre><span></span><span class="n">tf_init</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">initialize_all_variables</span><span class="p">()</span>
@@ -1225,11 +1635,11 @@ Extracting ../MNIST_data/t10k-labels-idx1-ubyte.gz
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[14]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[26]:</div>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>PyObject &lt;tensorflow.python.framework.ops.Operation object at 0x348097490&gt;</pre>
+<pre>PyObject &lt;tensorflow.python.framework.ops.Operation object at 0x34a8fb3d0&gt;</pre>
 </div>
 
 </div>
@@ -1240,10 +1650,10 @@ Extracting ../MNIST_data/t10k-labels-idx1-ubyte.gz
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="prompt input_prompt">In&nbsp;[27]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-julia"><pre><span></span><span class="n">correct_prediction</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">y</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="n">tf</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">y_</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+<div class=" highlight hl-julia"><pre><span></span><span class="n">correct_prediction</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">y</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="n">tf</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
 <span class="n">accuracy</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">correct_prediction</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">))</span>
 </pre></div>
 
@@ -1255,13 +1665,43 @@ Extracting ../MNIST_data/t10k-labels-idx1-ubyte.gz
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[15]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[27]:</div>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>PyObject &lt;tensorflow.python.framework.ops.Tensor object at 0x3480c0f90&gt;</pre>
+<pre>PyObject &lt;tensorflow.python.framework.ops.Tensor object at 0x34ef45550&gt;</pre>
 </div>
 
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[28]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-julia"><pre><span></span><span class="n">sess</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span>
+
+<span class="n">sess</span><span class="p">[:</span><span class="n">run</span><span class="p">](</span><span class="n">tf_init</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>I tensorflow/core/common_runtime/local_device.cc:40] Local device intra op parallelism threads: 4
+I tensorflow/core/common_runtime/direct_session.cc:58] Direct session inter op parallelism threads: 4
+</pre>
+</div>
 </div>
 
 </div>
@@ -1270,19 +1710,19 @@ Extracting ../MNIST_data/t10k-labels-idx1-ubyte.gz
 </div></section><section>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[16]:</div>
+<div class="prompt input_prompt">In&nbsp;[29]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-julia"><pre><span></span><span class="n">sess</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span>
-
-<span class="n">sess</span><span class="p">[:</span><span class="n">run</span><span class="p">](</span><span class="n">tf_init</span><span class="p">)</span>
-
-<span class="k">for</span> <span class="n">i</span> <span class="k">in</span> <span class="mi">1</span><span class="p">:</span><span class="mi">2000</span>
+<div class=" highlight hl-julia"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="k">in</span> <span class="mi">1</span><span class="p">:</span><span class="mi">2000</span>
     <span class="n">batch_xs</span><span class="p">,</span> <span class="n">batch_ys</span> <span class="o">=</span> <span class="n">mnist</span><span class="p">[:</span><span class="n">train</span><span class="p">][:</span><span class="n">next_batch</span><span class="p">](</span><span class="mi">100</span><span class="p">)</span>
-    <span class="n">sess</span><span class="p">[:</span><span class="n">run</span><span class="p">](</span><span class="n">train_step</span><span class="p">,</span> <span class="n">feed_dict</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">x</span> <span class="o">=&gt;</span> <span class="n">batch_xs</span><span class="p">,</span> <span class="n">y_</span> <span class="o">=&gt;</span> <span class="n">batch_ys</span><span class="p">))</span>
+    <span class="n">sess</span><span class="p">[:</span><span class="n">run</span><span class="p">](</span><span class="n">train_step</span><span class="p">,</span> <span class="n">feed_dict</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">x</span> <span class="o">=&gt;</span> <span class="n">batch_xs</span><span class="p">,</span> <span class="n">d</span> <span class="o">=&gt;</span> <span class="n">batch_ys</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">500</span> <span class="o">==</span> <span class="mi">0</span>
+        <span class="n">train_accuracy</span> <span class="o">=</span> <span class="n">sess</span><span class="p">[:</span><span class="n">run</span><span class="p">](</span><span class="n">accuracy</span><span class="p">,</span> <span class="n">feed_dict</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">x</span> <span class="o">=&gt;</span> <span class="n">batch_xs</span><span class="p">,</span> <span class="n">d</span> <span class="o">=&gt;</span> <span class="n">batch_ys</span><span class="p">))</span>
+        <span class="p">@</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;  step, accurary = </span><span class="si">%6d</span><span class="s">: </span><span class="si">%6.3f</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">train_accuracy</span><span class="p">)</span>
+    <span class="k">end</span>
 <span class="k">end</span>
 
-<span class="n">println</span><span class="p">(</span><span class="s">&quot;accuracy:</span><span class="si">$(sess[:run](accuracy, feed_dict=Dict(x =&gt; mnist[:test][:images], y_ =&gt; mnist[:test][:labels])))</span><span class="s">&quot;</span><span class="p">)</span>
+<span class="n">println</span><span class="p">(</span><span class="s">&quot;accuracy:</span><span class="si">$(sess[:run](accuracy, feed_dict=Dict(x =&gt; mnist[:test][:images], d =&gt; mnist[:test][:labels])))</span><span class="s">&quot;</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -1295,15 +1735,11 @@ Extracting ../MNIST_data/t10k-labels-idx1-ubyte.gz
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>accuracy:0.9495999813079834
-</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>I tensorflow/core/common_runtime/local_device.cc:40] Local device intra op parallelism threads: 4
-I tensorflow/core/common_runtime/direct_session.cc:58] Direct session inter op parallelism threads: 4
+<pre>  step, accurary =    500:  0.930
+  step, accurary =   1000:  0.990
+  step, accurary =   1500:  0.990
+  step, accurary =   2000:  1.000
+accuracy:0.9718999862670898
 </pre>
 </div>
 </div>

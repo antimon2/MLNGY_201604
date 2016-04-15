@@ -7,8 +7,8 @@ using HDF5
 
 # srand(12345678)
 
-datasets = Dict("train" => ("../MNIST_data/train-labels-idx1-ubyte.gz","../MNIST_data/train-images-idx3-ubyte.gz"),
-            "test" => ("../MNIST_data/t10k-labels-idx1-ubyte.gz","../MNIST_data/t10k-images-idx3-ubyte.gz"))
+datasets = Dict("train" => ("MNIST_data/train-labels-idx1-ubyte.gz","MNIST_data/train-images-idx3-ubyte.gz"),
+            "test" => ("MNIST_data/t10k-labels-idx1-ubyte.gz","MNIST_data/t10k-images-idx3-ubyte.gz"))
 
 for key in keys(datasets)
   label_fn, data_fn = datasets[key]
@@ -35,7 +35,7 @@ for key in keys(datasets)
 
   println("Exporting $n_data digits of size $h x $w")
 
-  h5open("../MNIST_data/$key.hdf5", "w") do h5
+  h5open("MNIST_data/$key.hdf5", "w") do h5
     dset_data = d_create(h5, "data", datatype(Float32), dataspace(w, h, 1, n_data))
     dset_label = d_create(h5, "label", datatype(Float32), dataspace(1, n_data))
 
