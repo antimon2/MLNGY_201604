@@ -685,10 +685,10 @@ test: MNIST_data/test.hdf5
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>16- 4 00:17:21:INFO:root:Constructing net MNIST-train on Mocha.CPUBackend...
-16- 4 00:17:21:INFO:root:Topological sorting 5 layers...
-16- 4 00:17:21:INFO:root:Setup layers...
-16- 4 00:17:22:INFO:root:Network constructed!
+<pre>16- 4 20:44:49:INFO:root:Constructing net MNIST-train on Mocha.CPUBackend...
+16- 4 20:44:49:INFO:root:Topological sorting 5 layers...
+16- 4 20:44:49:INFO:root:Setup layers...
+16- 4 20:44:50:INFO:root:Network constructed!
 </pre>
 </div>
 </div>
@@ -763,7 +763,7 @@ test: MNIST_data/test.hdf5
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>Mocha.Solver{Mocha.SGD}(Mocha.SGD(),Dict{Symbol,Any}(:regu_coef=&gt;0.0005,:load_from=&gt;&quot;&quot;,:lr_policy=&gt;Mocha.LRPolicy.Inv(0.01,0.0001,0.75),:mom_policy=&gt;Mocha.MomPolicy.Fixed(0.9),:max_iter=&gt;3000),Mocha.CoffeeLounge(&quot;&quot;,1,:merge,Dict{AbstractString,Dict{Int64,AbstractFloat}}(),Mocha.CoffeeBreak[],false,4491540912,4480009008))</pre>
+<pre>Mocha.Solver{Mocha.SGD}(Mocha.SGD(),Dict{Symbol,Any}(:regu_coef=&gt;0.0005,:load_from=&gt;&quot;&quot;,:lr_policy=&gt;Mocha.LRPolicy.Inv(0.01,0.0001,0.75),:mom_policy=&gt;Mocha.MomPolicy.Fixed(0.9),:max_iter=&gt;3000),Mocha.CoffeeLounge(&quot;&quot;,1,:merge,Dict{AbstractString,Dict{Int64,AbstractFloat}}(),Mocha.CoffeeBreak[],false,13183162560,13183323408))</pre>
 </div>
 
 </div>
@@ -854,13 +854,13 @@ test: MNIST_data/test.hdf5
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>16- 4 00:17:35:INFO:root:Constructing net MNIST-test on Mocha.CPUBackend...
-16- 4 00:17:35:INFO:root:Topological sorting 5 layers...
-16- 4 00:17:35:INFO:root:Setup layers...
-16- 4 00:17:36:DEBUG:root:InnerProductLayer(h1): sharing weights and bias
-16- 4 00:17:36:DEBUG:root:InnerProductLayer(h2): sharing weights and bias
-16- 4 00:17:36:DEBUG:root:InnerProductLayer(y): sharing weights and bias
-16- 4 00:17:36:INFO:root:Network constructed!
+<pre>16- 4 20:45:11:INFO:root:Constructing net MNIST-test on Mocha.CPUBackend...
+16- 4 20:45:11:INFO:root:Topological sorting 5 layers...
+16- 4 20:45:11:INFO:root:Setup layers...
+16- 4 20:45:11:DEBUG:root:InnerProductLayer(h1): sharing weights and bias
+16- 4 20:45:11:DEBUG:root:InnerProductLayer(h2): sharing weights and bias
+16- 4 20:45:11:DEBUG:root:InnerProductLayer(y): sharing weights and bias
+16- 4 20:45:11:INFO:root:Network constructed!
 </pre>
 </div>
 </div>
@@ -931,45 +931,45 @@ test: MNIST_data/test.hdf5
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>16- 4 00:17:38:DEBUG:root:#DEBUG Checking network topology for back-propagation
-16- 4 00:17:38:DEBUG:root:Init network MNIST-train
-16- 4 00:17:39:DEBUG:root:Init parameter weight for layer h1
-16- 4 00:17:39:DEBUG:root:Init parameter bias for layer h1
-16- 4 00:17:39:DEBUG:root:Init parameter weight for layer h2
-16- 4 00:17:39:DEBUG:root:Init parameter bias for layer h2
-16- 4 00:17:39:DEBUG:root:Init parameter weight for layer y
-16- 4 00:17:39:DEBUG:root:Init parameter bias for layer y
-16- 4 00:17:40:DEBUG:root:#DEBUG Initializing coffee breaks
-16- 4 00:17:40:DEBUG:root:Init network MNIST-test
-16- 4 00:17:41:INFO:root: TRAIN iter=000000 obj_val=2.32515907
-16- 4 00:17:41:INFO:root:
-16- 4 00:17:41:INFO:root:## Performance on Validation Set after 0 iterations
-16- 4 00:17:41:INFO:root:---------------------------------------------------------
-16- 4 00:17:41:INFO:root:  Accuracy (avg over 10000) = 8.9000%
-16- 4 00:17:41:INFO:root:---------------------------------------------------------
-16- 4 00:17:41:INFO:root:
-16- 4 00:17:41:DEBUG:root:#DEBUG Entering solver loop
-16- 4 00:17:43:INFO:root: TRAIN iter=001000 obj_val=0.11005754
-16- 4 00:17:43:INFO:root:
-16- 4 00:17:43:INFO:root:## Performance on Validation Set after 1000 iterations
-16- 4 00:17:43:INFO:root:---------------------------------------------------------
-16- 4 00:17:43:INFO:root:  Accuracy (avg over 10000) = 94.4600%
-16- 4 00:17:43:INFO:root:---------------------------------------------------------
-16- 4 00:17:43:INFO:root:
-16- 4 00:17:45:INFO:root: TRAIN iter=002000 obj_val=0.10670074
-16- 4 00:17:45:INFO:root:
-16- 4 00:17:45:INFO:root:## Performance on Validation Set after 2000 iterations
-16- 4 00:17:45:INFO:root:---------------------------------------------------------
-16- 4 00:17:45:INFO:root:  Accuracy (avg over 10000) = 95.7400%
-16- 4 00:17:45:INFO:root:---------------------------------------------------------
-16- 4 00:17:45:INFO:root:
-16- 4 00:17:47:INFO:root: TRAIN iter=003000 obj_val=0.20291162
-16- 4 00:17:47:INFO:root:
-16- 4 00:17:47:INFO:root:## Performance on Validation Set after 3000 iterations
-16- 4 00:17:47:INFO:root:---------------------------------------------------------
-16- 4 00:17:47:INFO:root:  Accuracy (avg over 10000) = 96.4800%
-16- 4 00:17:47:INFO:root:---------------------------------------------------------
-16- 4 00:17:47:INFO:root:
+<pre>16- 4 20:45:16:DEBUG:root:#DEBUG Checking network topology for back-propagation
+16- 4 20:45:16:DEBUG:root:Init network MNIST-train
+16- 4 20:45:16:DEBUG:root:Init parameter weight for layer h1
+16- 4 20:45:16:DEBUG:root:Init parameter bias for layer h1
+16- 4 20:45:16:DEBUG:root:Init parameter weight for layer h2
+16- 4 20:45:16:DEBUG:root:Init parameter bias for layer h2
+16- 4 20:45:16:DEBUG:root:Init parameter weight for layer y
+16- 4 20:45:16:DEBUG:root:Init parameter bias for layer y
+16- 4 20:45:18:DEBUG:root:#DEBUG Initializing coffee breaks
+16- 4 20:45:18:DEBUG:root:Init network MNIST-test
+16- 4 20:45:18:INFO:root: TRAIN iter=000000 obj_val=2.30202174
+16- 4 20:45:18:INFO:root:
+16- 4 20:45:18:INFO:root:## Performance on Validation Set after 0 iterations
+16- 4 20:45:18:INFO:root:---------------------------------------------------------
+16- 4 20:45:18:INFO:root:  Accuracy (avg over 10000) = 11.9800%
+16- 4 20:45:18:INFO:root:---------------------------------------------------------
+16- 4 20:45:18:INFO:root:
+16- 4 20:45:18:DEBUG:root:#DEBUG Entering solver loop
+16- 4 20:45:20:INFO:root: TRAIN iter=001000 obj_val=0.11264999
+16- 4 20:45:20:INFO:root:
+16- 4 20:45:20:INFO:root:## Performance on Validation Set after 1000 iterations
+16- 4 20:45:20:INFO:root:---------------------------------------------------------
+16- 4 20:45:20:INFO:root:  Accuracy (avg over 10000) = 93.9900%
+16- 4 20:45:20:INFO:root:---------------------------------------------------------
+16- 4 20:45:20:INFO:root:
+16- 4 20:45:22:INFO:root: TRAIN iter=002000 obj_val=0.11005990
+16- 4 20:45:22:INFO:root:
+16- 4 20:45:22:INFO:root:## Performance on Validation Set after 2000 iterations
+16- 4 20:45:22:INFO:root:---------------------------------------------------------
+16- 4 20:45:22:INFO:root:  Accuracy (avg over 10000) = 95.6500%
+16- 4 20:45:22:INFO:root:---------------------------------------------------------
+16- 4 20:45:22:INFO:root:
+16- 4 20:45:23:INFO:root: TRAIN iter=003000 obj_val=0.09127413
+16- 4 20:45:24:INFO:root:
+16- 4 20:45:24:INFO:root:## Performance on Validation Set after 3000 iterations
+16- 4 20:45:24:INFO:root:---------------------------------------------------------
+16- 4 20:45:24:INFO:root:  Accuracy (avg over 10000) = 96.6300%
+16- 4 20:45:24:INFO:root:---------------------------------------------------------
+16- 4 20:45:24:INFO:root:
 </pre>
 </div>
 </div>
@@ -1010,10 +1010,10 @@ test: MNIST_data/test.hdf5
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>16- 4 00:17:54:DEBUG:root:Destroying network MNIST-train
-16- 4 00:17:54:INFO:root:AsyncHDF5DataLayer: Stopping IO task...
-16- 4 00:17:54:INFO:root:AsyncHDF5DataLayer: IO Task reaching the end...
-16- 4 00:17:54:DEBUG:root:Destroying network MNIST-test
+<pre>16- 4 20:45:27:DEBUG:root:Destroying network MNIST-train
+16- 4 20:45:27:INFO:root:AsyncHDF5DataLayer: Stopping IO task...
+16- 4 20:45:27:INFO:root:AsyncHDF5DataLayer: IO Task reaching the end...
+16- 4 20:45:27:DEBUG:root:Destroying network MNIST-test
 </pre>
 </div>
 </div>
@@ -1148,7 +1148,7 @@ test: MNIST_data/test.hdf5
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>MXNet.mx.SymbolicNode(MXNet.mx.MX_SymbolHandle(Ptr{Void} @0x00007fceadb1d9c0))</pre>
+<pre>MXNet.mx.SymbolicNode(MXNet.mx.MX_SymbolHandle(Ptr{Void} @0x00007ff1cd4f96b0))</pre>
 </div>
 
 </div>
@@ -1191,7 +1191,7 @@ test: MNIST_data/test.hdf5
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>MXNet.mx.MXDataProvider(MXNet.mx.MX_DataIterHandle(Ptr{Void} @0x00007fceadb664a0),Tuple{Symbol,Tuple}[(:data,(784,100))],Tuple{Symbol,Tuple}[(:softmax_label,(100,))],100,true,true)</pre>
+<pre>MXNet.mx.MXDataProvider(MXNet.mx.MX_DataIterHandle(Ptr{Void} @0x00007ff1ced44130),Tuple{Symbol,Tuple}[(:data,(784,100))],Tuple{Symbol,Tuple}[(:softmax_label,(100,))],100,true,true)</pre>
 </div>
 
 </div>
@@ -1227,34 +1227,34 @@ test: MNIST_data/test.hdf5
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>16- 4 00:18:17:INFO:root:Start training on [CPU0]
-16- 4 00:18:17:INFO:root:Initializing parameters...
-16- 4 00:18:18:INFO:root:Creating KVStore...
-16- 4 00:18:18:INFO:root:Start training...
-16- 4 00:18:19:INFO:root:== Epoch 001 ==========
-16- 4 00:18:19:INFO:root:## Training summary
-16- 4 00:18:19:INFO:root:          accuracy = 0.7548
-16- 4 00:18:19:INFO:root:              time = 1.3291 seconds
-16- 4 00:18:19:INFO:root:## Validation summary
-16- 4 00:18:19:INFO:root:          accuracy = 0.9498
-16- 4 00:18:20:INFO:root:== Epoch 002 ==========
-16- 4 00:18:20:INFO:root:## Training summary
-16- 4 00:18:20:INFO:root:          accuracy = 0.9575
-16- 4 00:18:20:INFO:root:              time = 0.9406 seconds
-16- 4 00:18:20:INFO:root:## Validation summary
-16- 4 00:18:20:INFO:root:          accuracy = 0.9678
-16- 4 00:18:21:INFO:root:== Epoch 003 ==========
-16- 4 00:18:21:INFO:root:## Training summary
-16- 4 00:18:21:INFO:root:          accuracy = 0.9700
-16- 4 00:18:21:INFO:root:              time = 0.8987 seconds
-16- 4 00:18:21:INFO:root:## Validation summary
-16- 4 00:18:21:INFO:root:          accuracy = 0.9689
-16- 4 00:18:22:INFO:root:== Epoch 004 ==========
-16- 4 00:18:22:INFO:root:## Training summary
-16- 4 00:18:22:INFO:root:          accuracy = 0.9760
-16- 4 00:18:22:INFO:root:              time = 0.9881 seconds
-16- 4 00:18:23:INFO:root:## Validation summary
-16- 4 00:18:23:INFO:root:          accuracy = 0.9694
+<pre>16- 4 20:45:47:INFO:root:Start training on [CPU0]
+16- 4 20:45:47:INFO:root:Initializing parameters...
+16- 4 20:45:47:INFO:root:Creating KVStore...
+16- 4 20:45:48:INFO:root:Start training...
+16- 4 20:45:49:INFO:root:== Epoch 001 ==========
+16- 4 20:45:49:INFO:root:## Training summary
+16- 4 20:45:49:INFO:root:          accuracy = 0.7548
+16- 4 20:45:49:INFO:root:              time = 1.2143 seconds
+16- 4 20:45:49:INFO:root:## Validation summary
+16- 4 20:45:49:INFO:root:          accuracy = 0.9498
+16- 4 20:45:50:INFO:root:== Epoch 002 ==========
+16- 4 20:45:50:INFO:root:## Training summary
+16- 4 20:45:50:INFO:root:          accuracy = 0.9575
+16- 4 20:45:50:INFO:root:              time = 0.8548 seconds
+16- 4 20:45:50:INFO:root:## Validation summary
+16- 4 20:45:50:INFO:root:          accuracy = 0.9678
+16- 4 20:45:51:INFO:root:== Epoch 003 ==========
+16- 4 20:45:51:INFO:root:## Training summary
+16- 4 20:45:51:INFO:root:          accuracy = 0.9700
+16- 4 20:45:51:INFO:root:              time = 0.8818 seconds
+16- 4 20:45:51:INFO:root:## Validation summary
+16- 4 20:45:51:INFO:root:          accuracy = 0.9689
+16- 4 20:45:52:INFO:root:== Epoch 004 ==========
+16- 4 20:45:52:INFO:root:## Training summary
+16- 4 20:45:52:INFO:root:          accuracy = 0.9760
+16- 4 20:45:52:INFO:root:              time = 0.8602 seconds
+16- 4 20:45:52:INFO:root:## Validation summary
+16- 4 20:45:52:INFO:root:          accuracy = 0.9694
 </pre>
 </div>
 </div>
@@ -1468,7 +1468,7 @@ Extracting MNIST_data/t10k-labels-idx1-ubyte.gz
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>PyObject &lt;tensorflow.examples.tutorials.mnist.input_data.DataSets object at 0x34e566150&gt;</pre>
+<pre>PyObject &lt;tensorflow.examples.tutorials.mnist.input_data.DataSets object at 0x357cd7150&gt;</pre>
 </div>
 
 </div>
@@ -1510,7 +1510,7 @@ Extracting MNIST_data/t10k-labels-idx1-ubyte.gz
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>PyObject &lt;tensorflow.python.framework.ops.Tensor object at 0x34e594510&gt;</pre>
+<pre>PyObject &lt;tensorflow.python.framework.ops.Tensor object at 0x357d05510&gt;</pre>
 </div>
 
 </div>
@@ -1549,7 +1549,7 @@ Extracting MNIST_data/t10k-labels-idx1-ubyte.gz
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>PyObject &lt;tensorflow.python.framework.ops.Tensor object at 0x31282e050&gt;</pre>
+<pre>PyObject &lt;tensorflow.python.framework.ops.Tensor object at 0x31bf65050&gt;</pre>
 </div>
 
 </div>
@@ -1579,7 +1579,7 @@ Extracting MNIST_data/t10k-labels-idx1-ubyte.gz
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>PyObject &lt;tensorflow.python.framework.ops.Tensor object at 0x31283a690&gt;</pre>
+<pre>PyObject &lt;tensorflow.python.framework.ops.Tensor object at 0x31bf71690&gt;</pre>
 </div>
 
 </div>
@@ -1610,7 +1610,7 @@ Extracting MNIST_data/t10k-labels-idx1-ubyte.gz
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>PyObject &lt;tensorflow.python.framework.ops.Operation object at 0x34a932410&gt;</pre>
+<pre>PyObject &lt;tensorflow.python.framework.ops.Operation object at 0x35410c410&gt;</pre>
 </div>
 
 </div>
@@ -1639,7 +1639,7 @@ Extracting MNIST_data/t10k-labels-idx1-ubyte.gz
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>PyObject &lt;tensorflow.python.framework.ops.Operation object at 0x34a8fb3d0&gt;</pre>
+<pre>PyObject &lt;tensorflow.python.framework.ops.Operation object at 0x3540d53d0&gt;</pre>
 </div>
 
 </div>
@@ -1669,7 +1669,7 @@ Extracting MNIST_data/t10k-labels-idx1-ubyte.gz
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>PyObject &lt;tensorflow.python.framework.ops.Tensor object at 0x34ef45550&gt;</pre>
+<pre>PyObject &lt;tensorflow.python.framework.ops.Tensor object at 0x357e8e550&gt;</pre>
 </div>
 
 </div>
@@ -1735,11 +1735,11 @@ I tensorflow/core/common_runtime/direct_session.cc:58] Direct session inter op p
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>  step, accurary =    500:  0.930
-  step, accurary =   1000:  0.990
-  step, accurary =   1500:  0.990
+<pre>  step, accurary =    500:  0.940
+  step, accurary =   1000:  0.970
+  step, accurary =   1500:  0.950
   step, accurary =   2000:  1.000
-accuracy:0.9718999862670898
+accuracy:0.9743000268936157
 </pre>
 </div>
 </div>
